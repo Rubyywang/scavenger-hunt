@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(grep \"values:\\\\|Row\\\\['Insert\\\\|Relation\\\\$1\\\\['Insert\")",
+      "Bash(grep -n \"Relation\\\\$1\\\\['Insert'\\\\]\\\\|Table\\\\['Insert'\\\\]\\\\|GenericUpdatableView\\\\|is_upsert\\\\|insert\\\\b.*values\" \"C:\\\\Users\\\\Ruby W\\\\code\\\\scavenger-hunt\\\\node_modules\\\\@supabase\\\\postgrest-js\\\\dist\\\\index.d.mts\")",
+      "Bash(ls \"C:\\\\Users\\\\Ruby W\\\\code\\\\scavenger-hunt\"/*.tsbuildinfo)"
+    ]
+  }
+}

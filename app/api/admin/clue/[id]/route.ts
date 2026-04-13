@@ -12,7 +12,7 @@ export async function PATCH(
   const { id } = await params
   const { body, hint, location_name, points_value, unlocked_by_clue_id } = await req.json()
 
-  const updates: Record<string, unknown> = {}
+  const updates: Partial<{ body: string; hint: string | null; location_name: string | null; points_value: number; unlocked_by_clue_id: string | null }> = {}
   if (body?.trim())                    updates.body                = body.trim()
   if (hint !== undefined)              updates.hint                = hint?.trim() || null
   if (location_name !== undefined)     updates.location_name       = location_name?.trim() || null

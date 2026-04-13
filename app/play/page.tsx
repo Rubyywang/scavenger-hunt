@@ -21,7 +21,7 @@ export default async function PlayPage() {
 
   if (!teamData) redirect('/')
 
-  const { hunt, ...team } = teamData as TeamWithHunt & Record<string, unknown>
+  const { hunt, ...team } = (teamData as unknown) as TeamWithHunt & Record<string, unknown>
   const typedTeam = team as Team
   const typedHunt = hunt as Hunt
 

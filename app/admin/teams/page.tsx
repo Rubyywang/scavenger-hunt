@@ -6,11 +6,11 @@ import CreateTeamButton from '@/components/admin/CreateTeamButton'
 export default async function TeamsPage() {
   const { data: hunts } = await adminClient
     .from('hunt')
-    .select('id, status')
+    .select('*')
     .order('created_at', { ascending: false })
     .limit(1)
 
-  const hunt = (hunts?.[0] ?? null) as Pick<Hunt, 'id' | 'status'> | null
+  const hunt = (hunts?.[0] ?? null) as Hunt | null
 
   const { data: teams } = hunt
     ? await adminClient

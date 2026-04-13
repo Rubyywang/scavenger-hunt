@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   const { data: hunt, error: dbError } = await adminClient
     .from('hunt')
-    .insert({ title: title.trim(), status: 'draft' })
+    .insert({ title: title.trim() as string, status: 'draft' as const })
     .select()
     .single()
 

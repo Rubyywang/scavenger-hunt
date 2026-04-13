@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   const { data: team, error: dbError } = await adminClient
     .from('team')
-    .insert({ hunt_id, pin, name: null, total_score: 0 })
+    .insert({ hunt_id: hunt_id as string, pin: pin as string, name: null, total_score: 0 })
     .select()
     .single()
 

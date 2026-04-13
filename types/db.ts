@@ -6,7 +6,7 @@ export type HuntStatus       = 'draft' | 'active' | 'ended'
 export type SubmissionStatus = 'pending' | 'approved' | 'rejected' | 'failed'
 export type AiSuggestedStatus = 'approved' | 'rejected'
 
-export interface Hunt {
+export type Hunt = {
   id:         string
   title:      string
   status:     HuntStatus
@@ -15,7 +15,7 @@ export interface Hunt {
   ended_at:   string | null
 }
 
-export interface Clue {
+export type Clue = {
   id:                  string
   hunt_id:             string
   unlocked_by_clue_id: string | null  // null = free hanging (always visible)
@@ -25,7 +25,7 @@ export interface Clue {
   points_value:        number
 }
 
-export interface Team {
+export type Team = {
   id:          string
   hunt_id:     string
   name:        string | null
@@ -33,14 +33,14 @@ export interface Team {
   total_score: number
 }
 
-export interface Player {
+export type Player = {
   id:        string
   team_id:   string
   name:      string
   joined_at: string
 }
 
-export interface Submission {
+export type Submission = {
   id:             string
   team_id:        string
   clue_id:        string
@@ -52,14 +52,14 @@ export interface Submission {
   points_awarded: number
 }
 
-export interface Announcement {
+export type Announcement = {
   id:         string
   hunt_id:    string
   body:       string
   created_at: string
 }
 
-export interface AiReview {
+export type AiReview = {
   id:               string
   submission_id:    string
   model:            string
@@ -73,40 +73,58 @@ export interface Database {
   public: {
     Tables: {
       hunt: {
-        Row:    Hunt
-        Insert: Omit<Hunt, 'id' | 'created_at'>
-        Update: Partial<Omit<Hunt, 'id'>>
+        Row:           Hunt
+        Insert:        Omit<Hunt, 'id' | 'created_at' | 'started_at' | 'ended_at'> & { started_at?: string | null; ended_at?: string | null }
+        Update:        Partial<Omit<Hunt, 'id'>>
+        Relationships: []
       }
       clue: {
-        Row:    Clue
-        Insert: Omit<Clue, 'id'>
-        Update: Partial<Omit<Clue, 'id'>>
+        Row:           Clue
+        Insert:        Omit<Clue, 'id'>
+        Update:        Partial<Omit<Clue, 'id'>>
+        Relationships: []
       }
       team: {
-        Row:    Team
-        Insert: Omit<Team, 'id'>
-        Update: Partial<Omit<Team, 'id'>>
+        Row:           Team
+        Insert:        Omit<Team, 'id'>
+        Update:        Partial<Omit<Team, 'id'>>
+        Relationships: []
       }
       player: {
-        Row:    Player
-        Insert: Omit<Player, 'id' | 'joined_at'>
-        Update: Partial<Omit<Player, 'id'>>
+        Row:           Player
+        Insert:        Omit<Player, 'id' | 'joined_at'>
+        Update:        Partial<Omit<Player, 'id'>>
+        Relationships: []
       }
       submission: {
-        Row:    Submission
-        Insert: Omit<Submission, 'id' | 'submitted_at'>
-        Update: Partial<Omit<Submission, 'id'>>
+        Row:           Submission
+        Insert:        Omit<Submission, 'id' | 'submitted_at'>
+        Update:        Partial<Omit<Submission, 'id'>>
+        Relationships: []
       }
       announcement: {
-        Row:    Announcement
-        Insert: Omit<Announcement, 'id' | 'created_at'>
-        Update: Partial<Omit<Announcement, 'id'>>
+        Row:           Announcement
+        Insert:        Omit<Announcement, 'id' | 'created_at'>
+        Update:        Partial<Omit<Announcement, 'id'>>
+        Relationships: []
       }
       ai_review: {
-        Row:    AiReview
-        Insert: Omit<AiReview, 'id' | 'reviewed_at'>
-        Update: Partial<Omit<AiReview, 'id'>>
+        Row:           AiReview
+        Insert:        Omit<AiReview, 'id' | 'reviewed_at'>
+        Update:        Partial<Omit<AiReview, 'id'>>
+        Relationships: []
       }
+    }
+    Views: Record<string, never>
+    Functions: {
+      start_hunt:        { Args: { p_hunt_id: string };                                                                                         Returns: Hunt }
+      end_hunt:          { Args: { p_hunt_id: string };                                                                                         Returns: Hunt }
+      approve_submission:{ Args: { p_submission_id: string };                                                                                   Returns: Submission }
+      reject_submission: { Args: { p_submission_id: string };                                                                                   Returns: Submission }
+      generate_pin:      { Args: { p_hunt_id: string };                                                                                         Returns: string }
+      submit_clue:       { Args: { p_team_id: string; p_player_id: string; p_clue_id: string; p_photo_url: string };                            Returns: Submission }
+      join_team:         { Args: { p_pin: string; p_player_name: string; p_team_name: string | null };                                          Returns: { player: { id: string; name: string }; team: { id: string } } }
+      update_team_name:  { Args: { p_team_id: string; p_name: string };                                                                         Returns: Team }
     }
   }
 }

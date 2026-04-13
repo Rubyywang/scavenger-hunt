@@ -16,12 +16,12 @@ export async function POST(req: NextRequest) {
   const { data: clue, error: dbError } = await adminClient
     .from('clue')
     .insert({
-      hunt_id,
-      body:                body.trim(),
-      hint:                hint?.trim() || null,
-      location_name:       location_name?.trim() || null,
-      points_value:        points_value ?? 10,
-      unlocked_by_clue_id: unlocked_by_clue_id || null,
+      hunt_id:             hunt_id             as string,
+      body:                body.trim()         as string,
+      hint:                (hint?.trim()        || null) as string | null,
+      location_name:       (location_name?.trim() || null) as string | null,
+      points_value:        (points_value ?? 10) as number,
+      unlocked_by_clue_id: (unlocked_by_clue_id || null) as string | null,
     })
     .select()
     .single()

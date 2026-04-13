@@ -13,11 +13,11 @@ export default async function QueuePage() {
 
   // Generate signed URLs server-side — bucket is private
   const submissions: FullSubmission[] = await Promise.all(
-    (raw ?? []).map(async (sub) => {
+    ((raw ?? []) as unknown as FullSubmission[]).map(async (sub) => {
       const { data } = await adminClient.storage
         .from('submission-photos')
         .createSignedUrl(sub.photo_url, 3600)
-      return { ...(sub as unknown as FullSubmission), signed_url: data?.signedUrl ?? '' }
+      return { ...sub, signed_url: data?.signedUrl ?? '' }
     })
   )
 
