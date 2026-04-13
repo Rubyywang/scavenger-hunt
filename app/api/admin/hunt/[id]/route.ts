@@ -26,3 +26,33 @@ export async function PATCH(
 
   return NextResponse.json({ ok: true, hunt })
 }
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { error } = await requireAdminSession()
+  if (error) return error
+
+  const { id } = await params
+
+  // Refuse to delete an active hunt
+  const { data: hunt } = await adminClient
+    .from('hunt')
+    .select('status')
+    .eq('id', id)
+    .single()
+
+  if (hunt?.status === 'active') {
+    return NextResponse.json({ error: 'Cannot delete an active hunt — end it first' }, { status: 409 })
+  }
+
+  const { error: dbError } = await adminClient
+    .from('hunt')
+    .delete()
+    .eq('id', id)
+
+  if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
+
+  return NextResponse.json({ ok: true })
+}
