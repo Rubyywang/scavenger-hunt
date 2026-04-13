@@ -1,14 +1,16 @@
 import { adminClient } from '@/lib/supabase/admin'
-import type { Team } from '@/types/db'
+import type { Hunt, Team } from '@/types/db'
 import Leaderboard from '@/components/admin/Leaderboard'
 import BroadcastForm from '@/components/admin/BroadcastForm'
 
 export default async function LeaderboardPage() {
-  const { data: hunt } = await adminClient
+  const { data: huntData } = await adminClient
     .from('hunt')
-    .select('id, status')
+    .select('*')
     .eq('status', 'active')
     .maybeSingle()
+
+  const hunt = huntData as Hunt | null
 
   if (!hunt) {
     return (
