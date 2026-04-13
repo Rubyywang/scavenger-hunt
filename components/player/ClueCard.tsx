@@ -20,11 +20,25 @@ const STATUS_COLOR: Record<Submission['status'], string> = {
   failed:   'text-red-600',
 }
 
+function clueImageUrl(path: string) {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/clue-images/${path}`
+}
+
 export default function ClueCard({ clue, submission }: Props) {
   return (
     <div className="border rounded-lg p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
-        <p className="font-medium">{clue.body}</p>
+        <div className="flex-1 min-w-0 space-y-2">
+          {clue.image_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={clueImageUrl(clue.image_url)}
+              alt="Clue"
+              className="w-full rounded object-cover max-h-64"
+            />
+          )}
+          {clue.body && <p className="font-medium">{clue.body}</p>}
+        </div>
         <span className="text-xs text-gray-400 shrink-0">{clue.points_value}pt</span>
       </div>
 

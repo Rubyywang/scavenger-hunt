@@ -19,7 +19,8 @@ export type Clue = {
   id:                  string
   hunt_id:             string
   unlocked_by_clue_id: string | null  // null = free hanging (always visible)
-  body:                string
+  body:                string | null   // null when image_url is set instead
+  image_url:           string | null   // storage path in clue-images bucket
   hint:                string | null
   location_name:       string | null
   points_value:        number
@@ -80,7 +81,7 @@ export interface Database {
       }
       clue: {
         Row:           Clue
-        Insert:        Omit<Clue, 'id'>
+        Insert:        Omit<Clue, 'id'> & { body?: string | null; image_url?: string | null }
         Update:        Partial<Omit<Clue, 'id'>>
         Relationships: []
       }

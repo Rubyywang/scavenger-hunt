@@ -10,10 +10,11 @@ export async function PATCH(
   if (error) return error
 
   const { id } = await params
-  const { body, hint, location_name, points_value, unlocked_by_clue_id } = await req.json()
+  const { body, image_url, hint, location_name, points_value, unlocked_by_clue_id } = await req.json()
 
-  const updates: Partial<{ body: string; hint: string | null; location_name: string | null; points_value: number; unlocked_by_clue_id: string | null }> = {}
-  if (body?.trim())                    updates.body                = body.trim()
+  const updates: Partial<{ body: string | null; image_url: string | null; hint: string | null; location_name: string | null; points_value: number; unlocked_by_clue_id: string | null }> = {}
+  if (body !== undefined)              updates.body                = body?.trim() || null
+  if (image_url !== undefined)         updates.image_url           = image_url || null
   if (hint !== undefined)              updates.hint                = hint?.trim() || null
   if (location_name !== undefined)     updates.location_name       = location_name?.trim() || null
   if (points_value !== undefined)      updates.points_value        = points_value
