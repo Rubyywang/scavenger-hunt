@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { getPlayerSession } from '@/lib/session'
 import { adminClient } from '@/lib/supabase/admin'
 import type { Hunt, Team, Clue, Submission } from '@/types/db'
-import AnnouncementBanner from '@/components/player/AnnouncementBanner'
 import TeamNameForm from '@/components/player/TeamNameForm'
 import ClueList from '@/components/player/ClueList'
 import FinalScores from '@/components/player/FinalScores'
@@ -52,7 +51,6 @@ export default async function PlayPage() {
 
   return (
     <main className="min-h-screen p-4 max-w-lg mx-auto space-y-4">
-      <AnnouncementBanner huntId={typedHunt.id} />
       <TeamNameForm currentName={typedTeam.name ?? ''} />
       <ClueList
         team={typedTeam}

@@ -53,13 +53,6 @@ export type Submission = {
   points_awarded: number
 }
 
-export type Announcement = {
-  id:         string
-  hunt_id:    string
-  body:       string
-  created_at: string
-}
-
 export type AiReview = {
   id:               string
   submission_id:    string
@@ -101,12 +94,6 @@ export interface Database {
         Row:           Submission
         Insert:        Omit<Submission, 'id' | 'submitted_at'>
         Update:        Partial<Omit<Submission, 'id'>>
-        Relationships: []
-      }
-      announcement: {
-        Row:           Announcement
-        Insert:        Omit<Announcement, 'id' | 'created_at'>
-        Update:        Partial<Omit<Announcement, 'id'>>
         Relationships: []
       }
       ai_review: {

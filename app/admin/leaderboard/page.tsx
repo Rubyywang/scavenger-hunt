@@ -1,7 +1,6 @@
 import { adminClient } from '@/lib/supabase/admin'
 import type { Hunt, Team } from '@/types/db'
 import Leaderboard from '@/components/admin/Leaderboard'
-import BroadcastForm from '@/components/admin/BroadcastForm'
 
 export default async function LeaderboardPage() {
   const { data: huntData } = await adminClient
@@ -30,8 +29,6 @@ export default async function LeaderboardPage() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">Leaderboard</h1>
       <Leaderboard teams={(teams ?? []) as Team[]} />
-      <hr />
-      <BroadcastForm huntId={hunt.id} />
     </div>
   )
 }
